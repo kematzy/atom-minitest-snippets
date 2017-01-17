@@ -1,8 +1,8 @@
 {
-  "name": "minitest-snippets",
-  "version": "0.2.0",
+  "name": "atom-minitest-snippets",
+  "version": "0.3.0",
   "description": "Minitest snippets in Atom",
-  "repository": "https://github.com/jonmagic/atom-minitest-snippets",
+  "repository": "https://github.com/kematzy/atom-minitest-snippets",
   "license": "MIT",
   "engines": {
     "atom": "*",
@@ -10,6 +10,6 @@
   },
   "dependencies": {},
   "bugs": {
-    "url": "https://github.com/jonmagic/atom-minitest-snippets/issues"
+    "url": "https://github.com/kematzy/atom-minitest-snippets/issues"
   }
 }
