@@ -1,64 +1,218 @@
 '.source.ruby':
   'before :each':
     'prefix': 'be'
-    'body': 'before ${1::each }do\n\t$0\nend'
+    # 'body': 'before ${1::each }do\n\t$0\nend'
+    'body': """
+      before ${1::each} do
+        $0
+      end
+    """
   'before':
     'prefix': 'bef'
-    'body': 'before do\n\t$0\nend'
+    # 'body': 'before do\n\t$0\nend'
+    'body': """
+      before do
+        $0
+      end
+    """
   'describe [desc⇥]':
     'prefix': 'desc'
-    'body': 'describe ${1:Class} do\n\n\tit$0\n\nend'
+    # 'body': 'describe ${1:Class} do\n\n\tit$0\n\nend'
+    'body': """
+      describe ${1:Class} do
+
+        it$0
+
+      end
+    """
   'describe [des⇥]':
     'prefix': 'des'
-    'body': 'describe ${1:Class} do\n\n\tit$0\n\nend'
+    # 'body': 'describe ${1:Class} do\n\n\tit$0\n\nend'
+    'body': """
+      describe ${1:Class} do
+        it$0
+      end
+    """
   'it':
     'prefix': 'it'
-    'body': 'it \'${1:test}\' do\n\t$0\nend'
+    # 'body': 'it \'${1:test}\' do\n\t$0\nend'
+    'body': """
+      it "${1:test}" do
+        $0
+      end
+    """
+  'context [con⇥]':
+    'prefix': 'con'
+    'body': """
+      context "${1:Class}" do
+        sh$0
+      end
+    """
+  'should':
+    'prefix': 'sh'
+    'body': """
+      should "${1:test}" do
+        $0
+      end
+    """
+  'let(:symbol) { }':
+    'prefix': 'let'
+    'body': """let(:${1:test}) { $0 }"""
   'minispec':
     'prefix': 'minispec'
-    'body': 'require \'minitest/autorun\'\nrequire \'${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}\'\n\ndescribe ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g} do\n\n\tit$0\n\nend\n'
+    # 'body': 'require \'minitest/autorun\'\nrequire \'${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}\'\n\ndescribe ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g} do\n\n\tit$0\n\nend\n'
+    'body': """
+      require "minitest/autorun"
+      require "${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}"
+
+      describe ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g} do
+
+        it$0
+      end
+    """
   'minitest':
     'prefix': 'minitest'
-    'body': 'require \'minitest/autorun\'\nrequire \'${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}\'\n\nclass ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g}Test < MiniTest::Unit::TestCase\n\n\t$0\n\nend\n'
+    # 'body': 'require \'minitest/autorun\'\nrequire \'${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}\'\n\nclass ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g}Test < MiniTest::Unit::TestCase\n\n\t$0\n\nend\n'
+    'body': """
+      require "minitest/autorun"
+      require "${TM_FILENAME/(\\w+)_(test|spec).rb/$1/g}"
+
+      class ${TM_FILENAME/([a-z]+)(_([a-z]+))*_test\\.rb/\\u$1\\u$3/g}Test < MiniTest::Unit::TestCase
+        $0
+      end
+    """
+  'assert':
+    'prefix': 'as'
+    'body': 'assert ${1:test}${2:, "Failure message goes here."}$0'
+  'refute':
+    'prefix': 're'
+    'body': 'refute ${1:test}${2:, "Failure message."}$0'
+  'assert_equal':
+    'prefix': 'ase'
+    'body': 'assert_equal(${1:expected}, ${2:actual})$0'
+  # 'assert_not_equal':
+  #   'prefix': 'asne'
+  #   'body': 'assert_not_equal(${1:unexpected}, ${2:actual})$0'
+  'refute_equal':
+    'prefix': 'ree'
+    'body': 'refute_equal(${1:expected}, ${2:actual})$0'
+  'assert_instance_of':
+    'prefix': 'asio'
+    'body': 'assert_instance_of(${1:ExpectedClass}, ${2:actual_instance})$0'
+  'refute_instance_of':
+    'prefix': 'reio'
+    'body': 'refute_instance_of(${1:ExpectedClass}, ${2:actual_instance})$0'
+  'assert_kind_of':
+    'prefix': 'asko'
+    'body': 'assert_kind_of(${1:ExpectedKind}, ${2:actual_instance})$0'
+  'refute_kind_of':
+    'prefix': 'reko'
+    'body': 'refute_kind_of(${1:ExpectedKind}, ${2:actual_instance})$0'
+  'assert_empty':
+    'prefix': 'asem'
+    'body': 'assert_empty(${1:instance}${2:, "message"})$0'
+  'refute_empty':
+    'prefix': 'reem'
+    'body': 'refute_empty(${1:instance}${2:, "message"})$0'
+  'assert_nil':
+    'prefix': 'asn'
+    'body': 'assert_nil(${1:instance}${2:, "message"})$0'
+  # 'assert_not_nil':
+  #   'prefix': 'asnn'
+  #   'body': 'assert_not_nil(${1:instance}${2:, "message"})$0'
+  'refute_nil':
+    'prefix': 'ren'
+    'body': 'refute_nil(${1:instance}${2:, "message"})$0'
+  'assert_match':
+    'prefix': 'asm'
+    'body': 'assert_match(${1:/expected_pattern/}, ${2:"actual_string"})$0'
+  'refute_match':
+    'prefix': 'rem'
+    'body': 'refute_match(${1:/unexpected_pattern/}, ${2:"actual_string"})$0'
+  'assert_operator':
+    'prefix': 'aso'
+    'body': 'assert_operator(${1:left}, :${2:operator}, ${3:right})$0'
+  'refute_operator':
+    'prefix': 'reo'
+    'body': 'refute_operator(${1:left}, :${2:operator}, ${3:right})$0'
+  'assert_respond_to':
+    'prefix': 'asrt'
+    'body': 'assert_respond_to(${1:object}, :${2:method})$0'
+  'refute_respond_to':
+    'prefix': 'rert'
+    'body': 'refute_respond_to(${1:object}, :${2:method})$0'
+  'assert_same':
+    'prefix': 'ass'
+    'body': 'assert_same(${1:expected}, ${2:actual})$0'
+  'refute_same':
+    'prefix': 'res'
+    'body': 'refute_same(${1:unexpected}, ${2:actual})$0'
+  'assert_send':
+    'prefix': 'asse'
+    'body': 'assert_send([${1:object}, :${2:message}, ${3:args}])$0'
+  'refute_send':
+    'prefix': 'rese'
+    'body': 'refute_send([${1:object}, :${2:message}, ${3:args}])$0'
+  'assert_includes':
+    'prefix': 'asi'
+    'body': 'assert_includes(${1:collection}, :${2:obj}${3:, "Message"})$0'
+  'refute_includes':
+    'prefix': 'rei'
+    'body': 'refute_includes(${1:collection}, :${2:obj}${3:, "Message"})$0'
+  'assert_silent':
+    'prefix': 'assi'
+    'body': 'assert_silent() { $0 }'
+  'assert_throws':
+    'prefix': 'astr'
+    'body': 'assert_throws(${1::symbol}${2:, "Message"}) { $0 }'
+  'flunk':
+    'prefix': 'flu'
+    'body': 'flunk(${1:"Failure message."})$0'
+  'skip':
+    'prefix': 'ski'
+    'body': 'skip(${1:"Message."})$0'
+  'pass':
+    'prefix': 'pas'
+    'body': 'pass(${1:"Message."})$0'
   'must_be_close_to [mbct⇥]':
     'prefix': 'mbct'
-    'body': 'must_be_close_to ${1:expected}, ${0:allowed_variance}'
+    'body': 'must_be_close_to ${1:expected}, ${2:allowed_variance})$0'
   'must_be_close_to [mbc⇥]':
     'prefix': 'mbc'
-    'body': 'must_be_close_to ${1:expected}, ${0:allowed_variance}'
+    'body': 'must_be_close_to ${1:expected}, ${2:allowed_variance}$0'
   'must_be_empty':
     'prefix': 'mbe'
     'body': 'must_be_empty'
   'must_be_instance_of':
     'prefix': 'mbio'
-    'body': 'must_be_instance_of ${0:Class}'
+    'body': 'must_be_instance_of ${1:Class}$0'
   'must_be_kind_of':
     'prefix': 'mbko'
-    'body': 'must_be_kind_of ${0:Class}'
+    'body': 'must_be_kind_of ${1:Class}$0'
   'must_be_nil':
     'prefix': 'mbn'
-    'body': 'must_be_nil'
+    'body': 'must_be_nil$0'
   'must_be_same_as':
     'prefix': 'mbsa'
-    'body': 'must_be_same_as ${0:expected}'
+    'body': 'must_be_same_as ${1:expected}$0'
   'must_be_within_delta':
     'prefix': 'mbwd'
-    'body': 'must_be_within_delta ${1:expected}, ${0:allowed_variance}'
+    'body': 'must_be_within_delta ${1:expected}, ${2:allowed_variance}$0'
   'must_be_within_epsilon':
     'prefix': 'mbwe'
-    'body': 'must_be_within_epsilon ${1:expected}, ${0:allowed_variance}'
+    'body': 'must_be_within_epsilon ${1:expected}, ${2:allowed_variance}$0'
   'must_equal':
     'prefix': 'me'
-    'body': 'must_equal ${1:\'${2:expected}\'}$0'
+    'body': 'must_equal ${1: "${2:expected}" }$0'
   'must_include':
     'prefix': 'mi'
-    'body': 'must_include ${1:\'${2:expected}\'}$0'
+    'body': 'must_include ${1: "${2:expected}" }$0'
   'must_match':
     'prefix': 'mm'
     'body': 'must_match /${1:pattern}/$0'
   'must_respond_to':
     'prefix': 'mrt'
-    'body': 'must_respond_to :${0:method}'
+    'body': 'must_respond_to :${1:method}$0'
   'wont_include':
     'prefix': 'wi'
-    'body': 'wont_include ${1:\'${2:unexpected}\'}$0'
+    'body': 'wont_include ${1: "${2:unexpected}" }$0'
